@@ -1,3 +1,4 @@
+import 'package:digit_detective_app/Screens/DrawScreen.dart';
 import 'package:flutter/material.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -7,7 +8,7 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: "avenir"),
+      theme: ThemeData(fontFamily: "avenir", appBarTheme: AppBarTheme(color: Colors.black)),
       home: welcomePage(),
     );
   }
@@ -68,7 +69,12 @@ class _welcomePageState extends State<welcomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DrawScreen()));
+                    },
                     child: Container(
                       padding:
                           EdgeInsets.symmetric(vertical: 20, horizontal: 100),

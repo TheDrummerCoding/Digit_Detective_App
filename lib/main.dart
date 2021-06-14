@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'WelcomePage.dart';
+import 'Screens/WelcomePage.dart';
 
 void main() {
   runApp(MyApp());
