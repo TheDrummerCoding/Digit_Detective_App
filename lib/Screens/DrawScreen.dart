@@ -1,3 +1,7 @@
+import 'dart:typed_data';
+
+import 'package:digit_detective_app/Models/Prediction.dart';
+import 'package:digit_detective_app/Screens/Prediction_Widget.dart';
 import 'package:digit_detective_app/Screens/Utils/Constants.dart';
 import 'package:digit_detective_app/Services/Recognizer.dart';
 import 'package:digit_detective_app/Screens/Drawing_Painter.dart';
@@ -13,6 +17,8 @@ class DrawScreen extends StatefulWidget {
 class _DrawScreenState extends State<DrawScreen> {
   final _points = List<Offset>();
   final _recognizer = Recognizer();
+  var _prediction = [];
+  bool initializated = false;
 
   @override
   void initState() {
@@ -61,8 +67,12 @@ class _DrawScreenState extends State<DrawScreen> {
                       ],
                     ),
                   ),
-                )
+                ),
+                _mnistImagePreview()
               ],
+            ),
+            SizedBox(
+              height: 10,
             ),
             Container(
               width: Constants.canvaSize + Constants.borderSize * 2,
@@ -84,10 +94,19 @@ class _DrawScreenState extends State<DrawScreen> {
                 },
                 onPanEnd: (DragEndDetails details) {
                   _points.add(null);
+                  _recognize();
                 },
                 child: CustomPaint(
                   painter: DrawingPainter(_points),
                 ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              child: PredictionWidget(
+                predictions: _prediction,
               ),
             )
           ],
@@ -96,8 +115,41 @@ class _DrawScreenState extends State<DrawScreen> {
     );
   }
 
+  Widget _mnistImagePreview() {
+    return Container(
+      width: 100,
+      height: 100,
+      color: Colors.black,
+      child: FutureBuilder(
+        future: _previewImage(),
+        builder: (BuildContext, snapshot) {
+          if (snapshot.hasData) {
+            return Image.memory(
+              snapshot.data,
+              fit: BoxFit.fill,
+            );
+          } else {
+            return Center(
+              child: Text("Error"),
+            );
+          }
+        },
+      ),
+    );
+  }
+
   void _initModel() async {
     var res = await _recognizer.loadModel();
-    print(res);
+  }
+
+  Future<Uint8List> _previewImage() async {
+    return await _recognizer.previewImage(_points);
+  }
+
+  void _recognize() async {
+    List<dynamic> pred = await _recognizer.recognize(_points);
+    setState(() {
+      _prediction = pred.map((json) => Prediction.fromJson(json)).toList();
+    });
   }
 }
