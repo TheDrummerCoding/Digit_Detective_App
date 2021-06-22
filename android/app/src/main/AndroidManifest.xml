@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.digit_detective_app">
    <application
-        android:label="digit_detective_app"
+        android:label="Digit Detective"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

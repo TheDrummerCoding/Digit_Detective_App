@@ -17,7 +17,7 @@ class DrawScreen extends StatefulWidget {
 class _DrawScreenState extends State<DrawScreen> {
   final _points = List<Offset>();
   final _recognizer = Recognizer();
-  var _prediction = [];
+  List<Prediction> _prediction = [];
   bool initializated = false;
 
   @override
@@ -45,6 +45,7 @@ class _DrawScreenState extends State<DrawScreen> {
           child: Icon(Icons.clear),
           onPressed: () {
             setState(() {
+              _prediction.clear();
               _points.clear();
             });
           },
