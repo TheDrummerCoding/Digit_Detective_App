@@ -1,4 +1,4 @@
-# digit_detective_app
+# Digit Detective App 
 
 A new Flutter project.
 
